@@ -10,4 +10,4 @@ dependencies:
 test:
   override:
     - ls
-    - t/terraform help
+    - t/terraform plan -refresh=false
