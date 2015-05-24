@@ -1,0 +1,11 @@
+dependencies:
+  pre:
+    - wget https://dl.bintray.com/mitchellh/terraform/terraform_0.5.1_linux_amd64.zip -O t.zip
+    - unzip t.zip
+    - pwd
+    - terraform version
+  cache_directories:
+    - terraform_0.5.1
+test:
+  override:
+    - terraform help
