@@ -4,10 +4,10 @@ dependencies:
     - unzip t.zip
     - pwd
     - ls
-    - terraform version
+    - ./terraform version
   cache_directories:
     - terraform_0.5.1
 test:
   override:
     - ls
-    - terraform help
+    - ./terraform help
