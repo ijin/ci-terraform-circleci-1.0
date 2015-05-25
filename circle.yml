@@ -1,7 +1,6 @@
 machine:
   environment:
     PATH: ~/t_0.5.1:$PATH
-    TF_VAR_access_key: `grep aws_access .aws/credentials | awk '{print $3}'`
 dependencies:
   pre:
     - if [[ ! -e ~/t_0.5.1/terraform ]]; then wget https://dl.bintray.com/mitchellh/terraform/terraform_0.5.1_linux_amd64.zip -O t.zip && unzip t.zip -d ~/t_0.5.1; fi
@@ -12,7 +11,8 @@ dependencies:
     - ~/t_0.5.1
 test:
   override:
-#    - export TF_VAR_access_key=``
+    - export TF_VAR_access_key=`grep aws_access_key_id .aws/credentials | awk '{print $3}'`
+    - export TF_VAR_secret_key=`grep aws_secret_access_key .aws/credentials | awk '{print $3}'`
     - pwd
     - ls -alh ~/
     - env
