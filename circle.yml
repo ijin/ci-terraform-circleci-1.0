@@ -11,8 +11,8 @@ dependencies:
     - ~/t_0.5.1
 test:
   override:
-    - export TF_VAR_access_key=`grep aws_access_key_id .aws/credentials | awk '{print $3}'`
-    - export TF_VAR_secret_key=`grep aws_secret_access_key .aws/credentials | awk '{print $3}'`
+    - export TF_VAR_access_key=`grep aws_access_key_id ~/.aws/credentials | awk '{print $3}'`
+    - export TF_VAR_secret_key=`grep aws_secret_access_key ~/.aws/credentials | awk '{print $3}'`
     - pwd
     - ls -alh ~/
     - env
