@@ -1,14 +1,13 @@
 dependencies:
   pre:
-    - wget https://dl.bintray.com/mitchellh/terraform/terraform_0.5.1_linux_amd64.zip -O t.zip
-    - unzip t.zip -d t
+    - if [[ ! -e t/terraform ]]; then wget https://dl.bintray.com/mitchellh/terraform/terraform_0.5.1_linux_amd64.zip -O t.zip && unzip t.zip -d t_0.5.1; fi
     - pwd
     - ls
-    - t/terraform version
+    - t_0.5.1/terraform version
   cache_directories:
-    - t/terraform_0.5.1
+    - t_0.5.1
 test:
   override:
     - ls
     - env
-    - t/terraform plan -refresh=false
+    - t_0.5.1/terraform plan -refresh=false
