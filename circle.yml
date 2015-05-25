@@ -10,4 +10,5 @@ dependencies:
 test:
   override:
     - ls
+    - env
     - t/terraform plan -refresh=false
