@@ -8,6 +8,6 @@ dependencies:
     - t_0.5.1
 test:
   override:
-    - ls
+    - ls -alh 
     - env
-    - t_0.5.1/terraform plan -refresh=false
+    #- t_0.5.1/terraform plan -refresh=false
