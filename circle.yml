@@ -1,24 +1,28 @@
 machine:
   environment:
-    PATH: ~/t_0.5.1:$PATH
+    TF: 0.6.7
+    PATH: ~/${TF}:$PATH
+    S3: d-smart-sandbox-storage
 dependencies:
   pre:
-    - if [[ ! -e ~/t_0.5.1/terraform ]]; then wget https://dl.bintray.com/mitchellh/terraform/terraform_0.5.1_linux_amd64.zip -O t.zip && unzip t.zip -d ~/t_0.5.1; fi
-    - pwd
-    - ls
+    - mkdir -p ~/${TF}
+    - if [[ ! -e ~/${TF}/terraform ]]; then wget https://releases.hashicorp.com/terraform/${TF}/terraform_${TF}_linux_amd64.zip -O t.zip && unzip t.zip -d ~/${TF}; fi
     - terraform version
+    - . env.sh; terraform remote config -backend=S3 -backend-config="bucket=${S3}" -backend-config="key=tf/tf-state" -backend-config="region=ap-northeast-1"
   cache_directories:
-    - ~/t_0.5.1
+    - ~/${TF}
 test:
-  override:
-    #- export TF_VAR_access_key=`grep aws_access_key_id ~/.aws/credentials | awk '{print $3}'`
-    #- export TF_VAR_secret_key=`grep aws_secret_access_key ~/.aws/credentials | awk '{print $3}'`
-    - ls -alh ~/
+  pre:
+    - ls -alhtr ~/
     - env
-    #- terraform plan -refresh=false
-    - . env.sh; terraform plan -refresh=false
+    - . env.sh; terraform remote pull
+  override:
+    - . env.sh; terraform plan
 deployment:
-  production:
+  sandbox:
     branch: master
     commands:
-      - echo 'deploying!'
+      - |
+        . env.sh; terraform remote pull
+        . env.sh; terraform apply
+        ./tfcheck.sh $? && terraform remote push
